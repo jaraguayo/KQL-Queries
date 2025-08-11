@@ -1,0 +1,21 @@
+let PAMSHA=dynamic(["14b0c90a2eff6b94b9c5160875fcf29aff15dcfdfd3402d953441d9b0dca8b39","e594bca43ade76bbaab2592e9eabeb8dca8a72ed27afd5e26d857659ec173261","6d2d30d5295ad99018146c8e67ea12f4aaa2ca1a170ad287a579876bf03c2950","5e6041374f5b1e6c05393ea28468a91c41c38dc6b5a5230795a61c2b60ed14bc","9445da674e59ef27624cd5c8ffa0bd6c837de0d90dd2857cf28b16a08fd7dba6","7c3ada3f63a32f4727c62067d13e40bcb9aa9cbec8fb7e99a319931fc5a9332e","85c66835657e3ee6a478a2e0b1fd3d87119bebadc43a16814c30eb94c53766bb","f62624d28aaa0de93e49fcdaaa3b73623723bdfb308e95dcbeab583bdfe3ac64","24d71c0524467db1b83e661abc2b80d582f62fa0ead38fdf4974a64d59423ff1","5aeae90e3ab3418ef001cce2cddeaaaea5e4e27efdad4c6fa7459105ef6d55fa","ae26a4bc9323b7ae9d135ef3606339ee681a443ef45184c2553aa1468ba2e04b","ac32ed04c0a81eb2a84f3737affe73f5101970cc3f07e5a2e34b239ab0918edd"]);
+let PAMFILE=dynamic(["pam_linux.so", "centos7_pam_access.so", "pam_daemon.so.orig","sshhook(1).so","looter.so", "libselinux.so.8", "libse.so", "hijack"]);
+let LinuxDeviceId=DeviceInfo
+| where OSPlatform == "Linux"
+| distinct DeviceId;
+let ScanTime = 30d;
+let PAMEvents = DeviceEvents
+| where Timestamp > ago(ScanTime)
+| where DeviceId has_any (LinuxDeviceId) and (SHA256 has_any(PAMSHA) or FileName has_any (PAMFILE));
+let PAMFiles = DeviceFileEvents
+| where Timestamp > ago(ScanTime)
+| where DeviceId has_any (LinuxDeviceId) and (SHA256 has_any(PAMSHA) or FileName has_any (PAMFILE));
+let PAMImageLoad = DeviceImageLoadEvents
+| where Timestamp > ago(ScanTime)
+| where DeviceId has_any (LinuxDeviceId) and (SHA256 has_any(PAMSHA) or FileName has_any (PAMFILE));
+DeviceProcessEvents
+| where Timestamp > ago(ScanTime)
+| where DeviceId has_any (LinuxDeviceId) and (SHA256 has_any(PAMSHA) or FileName has_any (PAMFILE))
+| union PAMEvents, PAMFiles, PAMImageLoad
+
+//Hit against FileName only could generated FP, investigate process behavior
